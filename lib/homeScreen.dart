@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 2:
         print('started inserting data');
         db = await openDatabase('my_dbase.db');
-        var e=myUser.userInfo[0];
+
         myUser.userInfo.forEach((e) async {
           String insertString='''INSERT INTO datatable ( userId, status, phone,register,termination) VALUES ( '${e.name.toString()}', '${e.status.toString()}','${e.phone.toString()}','${e.registerDate.toString()}','${e.terminationDate.toString()}' )''';
           print(insertString);
@@ -242,6 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
         break;
       case 8:
+        //delete table screen
+      cmdStatus[8]=true;
         setState(() {
           myUser.userInfo.clear();
         });
