@@ -17,7 +17,7 @@ class SimpleTablePage extends StatefulWidget {
 class _SimpleTablePageState extends State<SimpleTablePage> {
   @override
   void initState() {
-    widget.user.initData(100);
+    //widget.user.initData(100);
     super.initState();
   }
 

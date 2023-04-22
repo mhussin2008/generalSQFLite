@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User myUser = User();
-  late List<String> cmdCaptions ;
+  late List<String> cmdCaptions;
   Image wrightIcon = Image.asset(
     'assets/icons/wright.png',
     width: 40,
@@ -26,20 +26,19 @@ class _HomeScreenState extends State<HomeScreen> {
     width: 40,
     height: 40,
   );
-  late List<bool> cmdStatus ;
+  late List<bool> cmdStatus;
 
-
- // (cmdStatus[entry.key] = true) ? wrightIcon : wrongIcon
+  // (cmdStatus[entry.key] = true) ? wrightIcon : wrongIcon
 
   late List<ElevatedButton> btnList = cmdCaptions
       .asMap()
       .entries
-      .map((entry) =>
-                  ElevatedButton(
-                      onPressed: () => btnClicked(entry.key),
-                      child: Text(cmdCaptions[entry.key])),
-                 )
-       .toList();
+      .map(
+        (entry) => ElevatedButton(
+            onPressed: () => btnClicked(entry.key),
+            child: Text(cmdCaptions[entry.key])),
+      )
+      .toList();
 
   late List<Image> chkList;
 
@@ -57,17 +56,18 @@ class _HomeScreenState extends State<HomeScreen> {
       'Delete DB',
       'Clear Scr Data'
     ];
-    cmdStatus =
-        List.generate(cmdCaptions.length, (index) => false);
+    cmdStatus = List.generate(cmdCaptions.length, (index) => false);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    chkList=cmdStatus.asMap().entries.map(
-            (e) => (cmdStatus[e.key] == true) ? wrightIcon : wrongIcon).toList();
+    chkList = cmdStatus
+        .asMap()
+        .entries
+        .map((e) => (cmdStatus[e.key] == true) ? wrightIcon : wrongIcon)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 10,
               color: Colors.red,
             ),
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
             color: Colors.cyanAccent,
@@ -92,7 +92,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: btnList,
               ),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: chkList,
@@ -120,8 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         if (dbExists) {
           setState(() {
-            cmdStatus[0]=true;
-            cmdStatus[7]=false;
+            cmdStatus[0] = true;
+            cmdStatus[7] = false;
           });
           print('data base already exists');
           print(dbFilePath);
@@ -130,38 +132,37 @@ class _HomeScreenState extends State<HomeScreen> {
           db = await openDatabase('my_dbase.db');
           if (db.isOpen) {
             setState(() {
-              cmdStatus[0]=true;
-              cmdStatus[7]=false;
+              cmdStatus[0] = true;
+              cmdStatus[7] = false;
             });
             print('dbase created now');
           }
         }
         break; //Create Database
       case 1:
-        if(dbExists){
+        if (dbExists) {
           db = await openDatabase('my_dbase.db');
           try {
-        await db.execute('''
+            await db.execute('''
         create table datatable (
         userId TEXT ,
         status TEXT,
         phone TEXT,
         register TEXT,
         termination TEXT
-       )''');}
-          catch(err){
-            if (err.toString().contains('DatabaseException')==true){
+       )''');
+          } catch (err) {
+            if (err.toString().contains('DatabaseException') == true) {
               setState(() {
-                cmdStatus[0]=true;
-                cmdStatus[1]=true;
+                cmdStatus[0] = true;
+                cmdStatus[1] = true;
               });
             }
             //print(err.toString().substring(0,30));
-
           }
         }
         setState(() {
-          cmdStatus[1]=true;
+          cmdStatus[1] = true;
         });
         break;
       case 2:
@@ -169,75 +170,52 @@ class _HomeScreenState extends State<HomeScreen> {
         db = await openDatabase('my_dbase.db');
 
         myUser.userInfo.forEach((e) async {
-          String insertString='''INSERT INTO datatable ( userId, status, phone,register,termination) VALUES ( '${e.name.toString()}', '${e.status.toString()}','${e.phone.toString()}','${e.registerDate.toString()}','${e.terminationDate.toString()}' )''';
+          //'''INSERT INTO datatable ( userId, status, phone,register,termination) VALUES ( '${e.name.toString()}', '${e.status.toString()}','${e.phone.toString()}','${e.registerDate.toString()}','${e.terminationDate.toString()}' )''';
+          String insertString =
+              '''INSERT INTO datatable ( userId, status, phone,register,termination) VALUES ( ${e.toLine()} )''';
           print(insertString);
           await db.execute(insertString);
-         // return null;
+          // return null;
         });
         setState(() {
-          cmdStatus[2]=true;
+          cmdStatus[2] = true;
         });
-        //String insertString='''INSERT INTO datatable ( userId, status, phone,register,termination) VALUES ( '${e.name.toString()}', '${e.status.toString()}','${e.phone.toString()}','${e.registerDate.toString()}','${e.terminationDate.toString()}' )''';
 
-
-
-
-
-        // db.database.transaction((txn) async {
-        //   var e=myUser.userInfo[0];
-        //  //myUser.userInfo.forEach((e)  async {
-        //     // e.name;
-        //     // e.phone;
-        //     // e.registerDate;
-        //     // e.terminationDate;
-        //     // e.status;
-        //
-        //
-        //         String insertString='''INSERT INTO datatable(userId, status, phone,register,termination) VALUES(${e.name}, ${e.status},${e.phone},${e.registerDate},${e.terminationDate})''';
-        //         print(insertString);
-        //         int id1 = await txn.rawInsert(insertString);
-        //         print('Inserted ${e.name}');
-        //     // return null;
-        //  // });
-
-
-          //return null;
-        // });
         break;
-      // reading data
-        case 4:
 
-         db= await openDatabase('my_dbase.db');
-        List<Map> gotlist = await db.database.rawQuery('SELECT * FROM datatable');
+
+      // reading data
+      case 4:
+        db = await openDatabase('my_dbase.db');
+        List<Map> gotlist =
+            await db.database.rawQuery('SELECT * FROM datatable');
         print(gotlist.length);
         //print(gotlist);
         print(gotlist[0]);
-        print(myUser.userInfo[0]);
+        //print(myUser.userInfo[0]);
+        myUser.userInfo.clear();
+        if(gotlist.length>0){
+          setState(() {
+           myUser.insertData(gotlist);
+          });
+        }
 
-        gotlist.forEach((e) {
-          var usr=UserInfo( e['userId'],e['status'],e['phone'],e['register'],e['termination']);
-          myUser.userInfo.add(usr);
-        });
 
         print(myUser.userInfo.length);
         print('added all');
         setState(() {
-
-          cmdStatus[4]=true;
+          cmdStatus[4] = true;
         });
         break;
-
-
-
 
       case 7:
         await databaseFactory.deleteDatabase(dbFilePath);
         dbExists = await File(dbFilePath).existsSync();
         if (!dbExists) {
           setState(() {
-            cmdStatus[0]=false;
-            cmdStatus[1]=false;
-            cmdStatus[7]=true;
+            cmdStatus[0] = false;
+            cmdStatus[1] = false;
+            cmdStatus[7] = true;
           });
           print('dbase deleted');
         }
@@ -245,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 8:
         //delete table screen
-      cmdStatus[8]=true;
+        cmdStatus[8] = true;
         setState(() {
           myUser.userInfo.clear();
         });

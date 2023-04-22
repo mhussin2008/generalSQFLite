@@ -16,6 +16,19 @@ class User {
     }
   }
 
+  void insertData(List<Map> data){
+    userInfo.clear();
+    print('lenght= ${data.length}');
+    data.forEach((e) {
+      var usr = UserInfo(e['userId'], e['status'], e['phone'],
+          e['register'], e['termination']);
+      print(usr.toString());
+
+      userInfo.add(usr);
+    });
+
+  }
+
   ///
   /// Single sort, sort Name's id
   void sortName(bool isAscending) {
@@ -66,6 +79,17 @@ class UserInfo {
       return terminationDate;
     }
     throw Exception('Invalid field name');
+  }
+
+  String toLine()
+  {
+    return ''' '$name', '$status', '$phone', '$registerDate', '$terminationDate' ''';
+  }
+
+  @override
+  String toString()
+  {
+    return 'userName is:$name,Status:$status,Phone:$phone,registartion date:$registerDate,terminationDate: $terminationDate';
   }
 }
 
