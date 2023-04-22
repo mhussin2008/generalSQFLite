@@ -212,6 +212,8 @@ class _HomeScreenState extends State<HomeScreen> {
         print(gotlist.length);
         //print(gotlist);
         print(gotlist[0]);
+        print(myUser.userInfo[0]);
+
         gotlist.forEach((e) {
           var usr=UserInfo( e['userId'],e['status'],e['phone'],e['register'],e['termination']);
           myUser.userInfo.add(usr);
