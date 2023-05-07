@@ -26,25 +26,27 @@ class _HomeScreenState extends State<HomeScreen> {
     width: 40,
     height: 40,
   );
-  late List<bool> cmdStatus;
+  late List<bool> cmdStatus= List.generate(cmdCaptions.length, (index) => true);
 
   // (cmdStatus[entry.key] = true) ? wrightIcon : wrongIcon
 
-  late List<ElevatedButton> btnList = cmdCaptions
-      .asMap()
-      .entries
-      .map(
-        (entry) => ElevatedButton(
-            onPressed: () => btnClicked(entry.key),
-            child: Text(cmdCaptions[entry.key])),
-      )
-      .toList();
+  late List<OutlinedButton> btnList= cmdCaptions
+        .asMap()
+        .entries
+        .map(
+    (entry) => OutlinedButton(
+    onPressed: () =>  btnClicked(entry.key),
+     child: Text(
+          cmdCaptions[entry.key],
+      )),).toList();
+
 
   late List<Image> chkList;
 
   @override
   void initState() {
     //myUser.initData(100);
+
     cmdCaptions = [
       'Create DB',
       'Create Table',
@@ -57,13 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
       'Clear Scr Data',
       'Generate New Data'
     ];
-    cmdStatus = List.generate(cmdCaptions.length, (index) => false);
+
 
     WidgetsBinding.instance.addPostFrameCallback((_){
       btnClicked(4);
     });
-
     super.initState();
+
   }
 
   @override
@@ -74,10 +76,19 @@ class _HomeScreenState extends State<HomeScreen> {
         .map((e) => (cmdStatus[e.key] == true) ? wrightIcon : wrongIcon)
         .toList();
 
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      onDrawerChanged: (changed){
+        if(changed==true) {
+        print('do all checks');
+          doAllChecks();
+        }
+
+        print(changed.toString());
+      },
       drawer: SafeArea(
         child: Container(
           width: 250,
@@ -117,6 +128,48 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //////Methods
+void doAllChecks () async
+{
+  var databasesPath = await getDatabasesPath();
+  var dbFilePath = '$databasesPath/my_dbase.db';
+  var dbExists = File(dbFilePath).existsSync();
+  if(dbExists==false){
+    print('no such database');
+    cmdStatus[0]=true;
+    for(int i=1;i<8;i++) {
+      cmdStatus[i] = false;
+    }
+  setState(() {
+  cmdStatus;
+  });
+    return;
+  }
+  late Database db;
+  db = await openDatabase('my_dbase.db');
+  if(db.isOpen==false){
+    print('cant open database');
+    return;
+  }
+  var tables = await db.rawQuery('SELECT * FROM sqlite_master WHERE name="datatable";');
+
+  if (tables.isEmpty) {
+    // Create the table
+    print('no such table');
+  return;
+  }
+
+  List<Map>? gotlist =
+  await db.database.rawQuery('SELECT * FROM datatable');
+if(gotlist.length==0){
+  print('Empty Table');
+  return;
+}
+
+
+
+
+}
+
   void btnClicked(int idx) async {
     var databasesPath = await getDatabasesPath();
     var dbFilePath = '$databasesPath/my_dbase.db';
@@ -125,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     switch (idx) {
       case 0:
+        if(cmdStatus[0]==false){return;}
         if (dbExists) {
           setState(() {
             cmdStatus[0] = true;
@@ -144,7 +198,9 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         }
         break; //Create Database
+
       case 1:
+        if(cmdStatus[1]==false){return;}
         if (dbExists) {
           db = await openDatabase('my_dbase.db');
           try {
@@ -170,7 +226,9 @@ class _HomeScreenState extends State<HomeScreen> {
           cmdStatus[1] = true;
         });
         break;
+
       case 2:
+        if(cmdStatus[2]==false){return;}
         print('started inserting data');
         db = await openDatabase('my_dbase.db');
 
@@ -191,9 +249,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // reading data
       case 4:
+        if(cmdStatus[4]==false){return;}
         db = await openDatabase('my_dbase.db');
+        var tables = await db.rawQuery('SELECT * FROM sqlite_master WHERE name="datatable";');
+
+        if (tables.isEmpty) {
+          // Create the table
+          print('no such table');
+          break;}
+
         List<Map>? gotlist =
             await db.database.rawQuery('SELECT * FROM datatable');
+        print(gotlist.length.toString());
         if (gotlist.length==0){
           print('Empty Table');
           break;
@@ -219,6 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         /// delete data from db
         case 5:
+          if(cmdStatus[5]==false){return;}
           db = await openDatabase('my_dbase.db');
           await db.database.rawQuery('DELETE FROM datatable');
           print('deleted all rows');
@@ -226,8 +294,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
         break;
+      case 6:
+        if(cmdStatus[6]==false){return;}
+          db = await openDatabase('my_dbase.db');
+          await db.database.rawQuery('DROP TABLE IF EXISTS datatable');
+          print('deleted the table');
+        break;
+
 
       case 7:
+        if(cmdStatus[7]==false){return;}
         await databaseFactory.deleteDatabase(dbFilePath);
         dbExists = await File(dbFilePath).existsSync();
         if (!dbExists) {
@@ -241,6 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         break;
       case 8:
+        if(cmdStatus[8]==false){return;}
         //delete table screen
         cmdStatus[8] = true;
         setState(() {
@@ -249,6 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         break;
       case 9:
+        if(cmdStatus[9]==false){return;}
         myUser.initData(100);
         setState(() {
 
