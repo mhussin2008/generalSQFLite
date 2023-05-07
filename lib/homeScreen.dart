@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    myUser.initData(100);
+    //myUser.initData(100);
     cmdCaptions = [
       'Create DB',
       'Create Table',
@@ -54,9 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
       'Delete Data',
       'Delete Table',
       'Delete DB',
-      'Clear Scr Data'
+      'Clear Scr Data',
+      'Generate New Data'
     ];
     cmdStatus = List.generate(cmdCaptions.length, (index) => false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      btnClicked(4);
+    });
 
     super.initState();
   }
@@ -75,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: SafeArea(
         child: Container(
-          width: 200,
+          width: 250,
           decoration: BoxDecoration(
             border: Border.all(
               width: 10,
@@ -187,8 +192,12 @@ class _HomeScreenState extends State<HomeScreen> {
       // reading data
       case 4:
         db = await openDatabase('my_dbase.db');
-        List<Map> gotlist =
+        List<Map>? gotlist =
             await db.database.rawQuery('SELECT * FROM datatable');
+        if (gotlist.length==0){
+          print('Empty Table');
+          break;
+        }
         print(gotlist.length);
         //print(gotlist);
         print(gotlist[0]);
@@ -206,6 +215,16 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           cmdStatus[4] = true;
         });
+        break;
+
+        /// delete data from db
+        case 5:
+          db = await openDatabase('my_dbase.db');
+          await db.database.rawQuery('DELETE FROM datatable');
+          print('deleted all rows');
+
+
+
         break;
 
       case 7:
@@ -226,6 +245,13 @@ class _HomeScreenState extends State<HomeScreen> {
         cmdStatus[8] = true;
         setState(() {
           myUser.userInfo.clear();
+        });
+
+        break;
+      case 9:
+        myUser.initData(100);
+        setState(() {
+
         });
 
         break;
