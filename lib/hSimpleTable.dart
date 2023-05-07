@@ -88,6 +88,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
+
           child: Row(
             children: <Widget>[
               Icon(

@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
-            color: Colors.cyanAccent,
+            color: Colors.white,
           ),
           child: Row(
             children: [
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: btnList,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void btnClicked(int idx) async {
     var databasesPath = await getDatabasesPath();
     var dbFilePath = '$databasesPath/my_dbase.db';
-    var dbExists = await File(dbFilePath).existsSync();
+    var dbExists = File(dbFilePath).existsSync();
     late Database db;
 
     switch (idx) {
