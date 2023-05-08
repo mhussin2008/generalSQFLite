@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'userData.dart';
 import 'hSimpleTable.dart';
@@ -26,20 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
     width: 40,
     height: 40,
   );
-  late List<bool> cmdStatus= List.generate(cmdCaptions.length, (index) => true);
+  late List<bool> cmdStatus =
+      List.generate(cmdCaptions.length, (index) => true);
 
   // (cmdStatus[entry.key] = true) ? wrightIcon : wrongIcon
 
-  late List<OutlinedButton> btnList= cmdCaptions
-        .asMap()
-        .entries
-        .map(
-    (entry) => OutlinedButton(
-    onPressed: () =>  btnClicked(entry.key),
-     child: Text(
-          cmdCaptions[entry.key],
-      )),).toList();
-
+  late List<OutlinedButton> btnList;
 
   late List<Image> chkList;
 
@@ -60,12 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
       'Generate New Data'
     ];
 
-
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       btnClicked(4);
     });
     super.initState();
-
   }
 
   @override
@@ -75,15 +66,31 @@ class _HomeScreenState extends State<HomeScreen> {
         .entries
         .map((e) => (cmdStatus[e.key] == true) ? wrightIcon : wrongIcon)
         .toList();
+    TextStyle TS1=TextStyle(color: Colors.black);
+    TextStyle TS2=TextStyle(color: Colors.black26);
 
+    btnList = cmdCaptions
+        .asMap()
+        .entries
+        .map(
+          (entry) => OutlinedButton(
+          onPressed: () => btnClicked(entry.key),
+          child: Text(
+            style:
+            cmdStatus[entry.key]? TS1:TS2
+
+            ,cmdCaptions[entry.key],
+          )
+    ),
+    ).toList();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      onDrawerChanged: (changed){
-        if(changed==true) {
-        print('do all checks');
+      onDrawerChanged: (changed) {
+        if (changed == true) {
+          print('do all checks');
           doAllChecks();
         }
 
@@ -128,47 +135,62 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //////Methods
-void doAllChecks () async
-{
-  var databasesPath = await getDatabasesPath();
-  var dbFilePath = '$databasesPath/my_dbase.db';
-  var dbExists = File(dbFilePath).existsSync();
-  if(dbExists==false){
-    print('no such database');
-    cmdStatus[0]=true;
-    for(int i=1;i<8;i++) {
-      cmdStatus[i] = false;
+  void doAllChecks() async {
+    var databasesPath = await getDatabasesPath();
+    var dbFilePath = '$databasesPath/my_dbase.db';
+    var dbExists = File(dbFilePath).existsSync();
+    if (dbExists == false) {
+      print('no such database');
+      cmdStatus[0] = true;
+      for (int i = 1; i < 8; i++) {
+        cmdStatus[i] = false;
+      }
+      return;
     }
-  setState(() {
-  cmdStatus;
-  });
-    return;
-  }
-  late Database db;
-  db = await openDatabase('my_dbase.db');
-  if(db.isOpen==false){
-    print('cant open database');
-    return;
-  }
-  var tables = await db.rawQuery('SELECT * FROM sqlite_master WHERE name="datatable";');
+    else{cmdStatus[0]=false;
+        }
 
-  if (tables.isEmpty) {
-    // Create the table
-    print('no such table');
-  return;
-  }
+    setState(() {
+      cmdStatus;
+    });
 
-  List<Map>? gotlist =
-  await db.database.rawQuery('SELECT * FROM datatable');
-if(gotlist.length==0){
-  print('Empty Table');
-  return;
+    late Database db;
+    db = await openDatabase('my_dbase.db');
+    if (db.isOpen == false) {
+      print('cant open database');
+      return;
+    }
+    var tables = await db
+        .rawQuery('SELECT * FROM sqlite_master WHERE name="datatable";');
+
+    if (tables.isEmpty) {
+      // Create the table
+      print('no such table');
+      setState(() {
+        cmdStatus[1]=true;
+      });
+      return;
+    }else{setState(() {
+  cmdStatus[1]=false;
+});
 }
 
+    List<Map>? gotlist = await db.database.rawQuery('SELECT * FROM datatable');
 
+    if (myUser.userInfo.length == 0) {
+      print('Empty Screen');
+      setState(() {
+        cmdStatus[2]=false;
+      });
+      return;
+    }else{
+      setState(() {
+        cmdStatus[2]=true;
+      });
+      return;
 
-
-}
+    }
+  }
 
   void btnClicked(int idx) async {
     var databasesPath = await getDatabasesPath();
@@ -178,7 +200,9 @@ if(gotlist.length==0){
 
     switch (idx) {
       case 0:
-        if(cmdStatus[0]==false){return;}
+        if (cmdStatus[0] == false) {
+          return;
+        }
         if (dbExists) {
           setState(() {
             cmdStatus[0] = true;
@@ -200,7 +224,9 @@ if(gotlist.length==0){
         break; //Create Database
 
       case 1:
-        if(cmdStatus[1]==false){return;}
+        if (cmdStatus[1] == false) {
+          return;
+        }
         if (dbExists) {
           db = await openDatabase('my_dbase.db');
           try {
@@ -228,7 +254,9 @@ if(gotlist.length==0){
         break;
 
       case 2:
-        if(cmdStatus[2]==false){return;}
+        if (cmdStatus[2] == false) {
+          return;
+        }
         print('started inserting data');
         db = await openDatabase('my_dbase.db');
 
@@ -246,22 +274,25 @@ if(gotlist.length==0){
 
         break;
 
-
       // reading data
       case 4:
-        if(cmdStatus[4]==false){return;}
+        if (cmdStatus[4] == false) {
+          return;
+        }
         db = await openDatabase('my_dbase.db');
-        var tables = await db.rawQuery('SELECT * FROM sqlite_master WHERE name="datatable";');
+        var tables = await db
+            .rawQuery('SELECT * FROM sqlite_master WHERE name="datatable";');
 
         if (tables.isEmpty) {
           // Create the table
           print('no such table');
-          break;}
+          break;
+        }
 
         List<Map>? gotlist =
             await db.database.rawQuery('SELECT * FROM datatable');
         print(gotlist.length.toString());
-        if (gotlist.length==0){
+        if (gotlist.length == 0) {
           print('Empty Table');
           break;
         }
@@ -270,12 +301,11 @@ if(gotlist.length==0){
         print(gotlist[0]);
         //print(myUser.userInfo[0]);
         myUser.userInfo.clear();
-        if(gotlist.length>0){
+        if (gotlist.length > 0) {
           setState(() {
-           myUser.insertData(gotlist);
+            myUser.insertData(gotlist);
           });
         }
-
 
         print(myUser.userInfo.length);
         print('added all');
@@ -284,26 +314,29 @@ if(gotlist.length==0){
         });
         break;
 
-        /// delete data from db
-        case 5:
-          if(cmdStatus[5]==false){return;}
-          db = await openDatabase('my_dbase.db');
-          await db.database.rawQuery('DELETE FROM datatable');
-          print('deleted all rows');
-
-
+      /// delete data from db
+      case 5:
+        if (cmdStatus[5] == false) {
+          return;
+        }
+        db = await openDatabase('my_dbase.db');
+        await db.database.rawQuery('DELETE FROM datatable');
+        print('deleted all rows');
 
         break;
       case 6:
-        if(cmdStatus[6]==false){return;}
-          db = await openDatabase('my_dbase.db');
-          await db.database.rawQuery('DROP TABLE IF EXISTS datatable');
-          print('deleted the table');
+        if (cmdStatus[6] == false) {
+          return;
+        }
+        db = await openDatabase('my_dbase.db');
+        await db.database.rawQuery('DROP TABLE IF EXISTS datatable');
+        print('deleted the table');
         break;
 
-
       case 7:
-        if(cmdStatus[7]==false){return;}
+        if (cmdStatus[7] == false) {
+          return;
+        }
         await databaseFactory.deleteDatabase(dbFilePath);
         dbExists = await File(dbFilePath).existsSync();
         if (!dbExists) {
@@ -317,7 +350,9 @@ if(gotlist.length==0){
 
         break;
       case 8:
-        if(cmdStatus[8]==false){return;}
+        if (cmdStatus[8] == false) {
+          return;
+        }
         //delete table screen
         cmdStatus[8] = true;
         setState(() {
@@ -326,11 +361,11 @@ if(gotlist.length==0){
 
         break;
       case 9:
-        if(cmdStatus[9]==false){return;}
+        if (cmdStatus[9] == false) {
+          return;
+        }
         myUser.initData(100);
-        setState(() {
-
-        });
+        setState(() {});
 
         break;
 
