@@ -186,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }else{
       setState(() {
         cmdStatus[2]=true;
+
       });
       return;
 
