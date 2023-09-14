@@ -18,14 +18,17 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
   @override
   void initState() {
     //widget.user.initData(100);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Simple Table')),
-      body: HorizontalDataTable(
+    return
+      // Scaffold(
+      // appBar: AppBar(title: const Text('Simple Table')),
+      // body:
+      HorizontalDataTable(
         leftHandSideColumnWidth: 100,
         rightHandSideColumnWidth: 600,
         isFixedHeader: true,
@@ -35,14 +38,15 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
         leftSideItemBuilder: _generateFirstColumnRow,
         rightSideItemBuilder: _generateRightHandSideColumnRow,
         itemCount: widget.user.userInfo.length,
+
         rowSeparatorWidget: const Divider(
           color: Colors.black38,
           height: 1.0,
-          thickness: 0.0,
+          thickness: 1.0,
         ),
         leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
         rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-      ),
+
     );
   }
 
@@ -84,6 +88,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
+
           child: Row(
             children: <Widget>[
               Icon(
