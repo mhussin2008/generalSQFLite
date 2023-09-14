@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   horizontal_data_table: ^4.1.5
   sqflite: ^2.2.6
+  word_generator: ^0.4.3
 
 
 dev_dependencies:
