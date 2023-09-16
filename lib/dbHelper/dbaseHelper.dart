@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:generaldbase/dbHelper/theData.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -9,6 +10,7 @@ class dbaseHelper
   late var databasesPath ;
   late var dbFilePath;
   late var dbExists;
+  late var tableExists;
   late Database db;
 
 
@@ -33,6 +35,42 @@ class dbaseHelper
 
 
 
+  }
+
+  void createTable() async
+  {
+    if(dbExists) {
+      var result =
+      await db.rawQuery('SELECT * FROM sqlite_master WHERE name="data";');
+      //print(tableExists.runtimeType);
+      //print(tableExists);
+      if(result.isEmpty){tableExists=false;}else{tableExists=true;}
+    }else{print('database doesnt exist');return;}
+
+      if(tableExists==false){
+      await db.execute('CREATE TABLE data '
+          '(id INTEGER PRIMARY KEY AUTOINCREMENT,'
+          ' name TEXT,'
+          'age INTEGER'
+          ')');
+      print('table created');
+
+    }else{print('data table already exists');}
+  }
+
+
+  void addDatatoTable(List<SingleRecord> txRecords)  {
+    var result;
+    if(dbExists  && tableExists){
+      txRecords.forEach((element) async {
+        result = await db.rawInsert(
+            'INSERT INTO data (Name, Age) VALUES ("${element.Name}", "${element.Age}")');
+        print(result.toString());
+      });
+
+
+
+    }
   }
 
 }

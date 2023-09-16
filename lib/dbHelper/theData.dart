@@ -7,11 +7,17 @@ class Records{
   List<SingleRecord> recordsList=<SingleRecord>[];
 
 
+  void ClearRecords(){
+    recordsList.clear();
+    print('clreared all');
+  }
+
   void generateData(){
     final wordGenerator = WordGenerator();
    var rnouns = wordGenerator.randomNouns(10);
    var rages=<int>[];
     var rng = Random();
+    ClearRecords();
    for(int i=0;i<10;i++){
      rages.add(rng.nextInt(100));
      recordsList.add(SingleRecord(rnouns[i], rages[i]));
@@ -34,14 +40,14 @@ class Records{
 
 class SingleRecord{
   final String Name;
-  final int age;
+  final int Age;
 
-  SingleRecord(this.Name, this.age);
+  SingleRecord(this.Name, this.Age);
 
   @override
   String toString() {
     // TODO: implement toString
-    return 'name= $Name , age= $age';
+    return 'name= $Name , age= $Age';
   }
 
 }
