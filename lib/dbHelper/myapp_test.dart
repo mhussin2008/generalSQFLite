@@ -32,6 +32,7 @@ class _testHelperState extends State<testHelper> {
                 myRecords.printData();
               },
               child: Text('get data'),),
+
               ElevatedButton(onPressed: (){
                 mydbHelper.createTable();
               },
@@ -40,7 +41,14 @@ class _testHelperState extends State<testHelper> {
               ElevatedButton(onPressed: (){
                 mydbHelper.addDatatoTable(myRecords.recordsList);
               },
-                  child: Text('Add data to table'))
+                  child: Text('Add data to table')),
+
+              ElevatedButton(onPressed: (){
+                mydbHelper.readFromDatabase();
+              },
+                  child: Text('read data from db'))
+
+
             ],
           ),
         ),

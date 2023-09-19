@@ -10,7 +10,7 @@ class dbaseHelper
   late var databasesPath ;
   late var dbFilePath;
   late var dbExists;
-  late var tableExists;
+  var tableExists=false;
   late Database db;
 
 
@@ -37,15 +37,19 @@ class dbaseHelper
 
   }
 
-  void createTable() async
-  {
+  void tableExistsF() async{
     if(dbExists) {
       var result =
-      await db.rawQuery('SELECT * FROM sqlite_master WHERE name="data";');
+          await db.rawQuery('SELECT * FROM sqlite_master WHERE name="data";');
       //print(tableExists.runtimeType);
       //print(tableExists);
       if(result.isEmpty){tableExists=false;}else{tableExists=true;}
     }else{print('database doesnt exist');return;}
+  }
+
+  void createTable() async
+  {
+    tableExistsF();
 
       if(tableExists==false){
       await db.execute('CREATE TABLE data '
@@ -61,6 +65,7 @@ class dbaseHelper
 
   void addDatatoTable(List<SingleRecord> txRecords)  {
     var result;
+    tableExistsF();
     if(dbExists  && tableExists){
       txRecords.forEach((element) async {
         result = await db.rawInsert(
@@ -71,6 +76,17 @@ class dbaseHelper
 
 
     }
+  }
+
+  void readFromDatabase() async {
+    tableExistsF();
+    List<Map<String, Object?>> showRecords= await db.query('data');
+    showRecords.forEach((element) {
+      print(element.toString());
+    });
+
+
+
   }
 
 }
