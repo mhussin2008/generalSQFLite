@@ -1,6 +1,10 @@
 import 'dart:math';
-
 import 'package:word_generator/word_generator.dart';
+
+import 'dbaseHelper.dart';
+
+dbaseHelper mydbHelper = dbaseHelper();
+Records myRecords = Records();
 
 
 class Records{

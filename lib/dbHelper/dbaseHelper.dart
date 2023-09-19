@@ -80,11 +80,27 @@ class dbaseHelper
 
   void readFromDatabase() async {
     tableExistsF();
-    List<Map<String, Object?>> showRecords= await db.query('data');
+    myRecords.recordsList.clear();
+
+        List<Map<String, dynamic?>> showRecords= await db.query('data');
     showRecords.forEach((element) {
+      myRecords.recordsList.add(SingleRecord(element.values.elementAt(1), element.values.elementAt(2)));
+      // print(element.values);
+      // print(element.runtimeType);
       print(element.toString());
     });
 
+
+
+  }
+
+  void deleteDataInTable() {
+    tableExistsF();
+    if(dbExists && tableExists){
+      mydbHelper.db.delete('data');
+      print('all data in data table were deleted');
+
+    }
 
 
   }

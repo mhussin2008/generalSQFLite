@@ -10,8 +10,8 @@ class testHelper extends StatefulWidget {
 }
 
 class _testHelperState extends State<testHelper> {
-  dbaseHelper mydbHelper = dbaseHelper();
-  Records myRecords = Records();
+  // dbaseHelper mydbHelper = dbaseHelper();
+  // Records myRecords = Records();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,11 @@ class _testHelperState extends State<testHelper> {
               ),
               ElevatedButton(
                   onPressed: () {
+                    myRecords.recordsList.clear();
+                  },
+                  child: const Text('delete data from memory')),
+              ElevatedButton(
+                  onPressed: () {
                     showDataFromMemory();
                   },
                   child: const Text('show data from memory')),
@@ -52,7 +57,13 @@ class _testHelperState extends State<testHelper> {
                   onPressed: () {
                     mydbHelper.readFromDatabase();
                   },
-                  child: const Text('read data from db'))
+                  child: const Text('read data from db')),
+              ElevatedButton(
+                  onPressed: () {
+                    mydbHelper.deleteDataInTable();
+                  },
+                  child: const Text('delete all data in DB')),
+
             ],
           ),
         ),
@@ -61,6 +72,7 @@ class _testHelperState extends State<testHelper> {
   }
   void showDataFromMemory() {
     myRecords.recordsList.forEach((element) {
+
       print(element);
       });
   }
