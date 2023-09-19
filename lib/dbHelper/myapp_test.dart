@@ -12,7 +12,7 @@ class testHelper extends StatefulWidget {
 class _testHelperState extends State<testHelper> {
   // dbaseHelper mydbHelper = dbaseHelper();
   // Records myRecords = Records();
-
+  TextStyle _mystyle=  const TextStyle(fontSize: 25);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,38 +31,38 @@ class _testHelperState extends State<testHelper> {
                   print(mydbHelper.db.path);
                   myRecords.printData();
                 },
-                child: const Text('generate Random Data'),
+                child:  Text('generate Random Data',style:  _mystyle),
               ),
               ElevatedButton(
                   onPressed: () {
                     myRecords.recordsList.clear();
                   },
-                  child: const Text('delete data from memory')),
+                  child:  Text('delete data from memory',style:  _mystyle)),
               ElevatedButton(
                   onPressed: () {
                     showDataFromMemory();
                   },
-                  child: const Text('show data from memory')),
+                  child:  Text('show data from memory',style:  _mystyle)),
               ElevatedButton(
                   onPressed: () {
                     mydbHelper.createTable();
                   },
-                  child: const Text('Create Table')),
+                  child:  Text('Create Table',style:  _mystyle)),
               ElevatedButton(
                   onPressed: () {
                     mydbHelper.addDatatoTable(myRecords.recordsList);
                   },
-                  child: const Text('Add data to table')),
+                  child:  Text('Add data to table',style:  _mystyle)),
               ElevatedButton(
                   onPressed: () {
                     mydbHelper.readFromDatabase();
                   },
-                  child: const Text('read data from db')),
+                  child:  Text('read data from db',style:  _mystyle)),
               ElevatedButton(
                   onPressed: () {
                     mydbHelper.deleteDataInTable();
                   },
-                  child: const Text('delete all data in DB')),
+                  child:  Text('delete all data in DB',style:  _mystyle)),
 
             ],
           ),
