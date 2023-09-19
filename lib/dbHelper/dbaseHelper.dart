@@ -9,8 +9,8 @@ class dbaseHelper
   static final dbaseHelper _instance = dbaseHelper._internal();
   late var databasesPath ;
   late var dbFilePath;
-  late var dbExists;
-  var tableExists=false;
+  bool dbExists=false;
+  bool tableExists=false;
   late Database db;
 
 
@@ -28,11 +28,13 @@ class dbaseHelper
   }
 
   void initialize() async {
+    print('started initialization');
     databasesPath = await getDatabasesPath();
     dbFilePath = '$databasesPath/my_dbase.db';
-    dbExists = await File(dbFilePath).existsSync();
+    await File(dbFilePath).existsSync();
     db=await openDatabase('my_dbase.db');
-
+    print('finished initialization');
+    if(db.isOpen){dbExists=true;}
 
 
   }
@@ -79,18 +81,19 @@ class dbaseHelper
   }
 
   void readFromDatabase() async {
-    tableExistsF();
-    myRecords.recordsList.clear();
+    if(dbExists) {
+      tableExistsF();
+      myRecords.recordsList.clear();
 
-        List<Map<String, dynamic?>> showRecords= await db.query('data');
-    showRecords.forEach((element) {
-      myRecords.recordsList.add(SingleRecord(element.values.elementAt(1), element.values.elementAt(2)));
-      // print(element.values);
-      // print(element.runtimeType);
-      print(element.toString());
-    });
-
-
+      List<Map<String, dynamic?>> showRecords = await db.query('data');
+      showRecords.forEach((element) {
+        myRecords.recordsList.add(SingleRecord(
+            element.values.elementAt(1), element.values.elementAt(2)));
+        // print(element.values);
+        // print(element.runtimeType);
+        print(element.toString());
+      });
+    }else{print('database not opened yet');}
 
   }
 
