@@ -52,7 +52,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
 
   List<Widget> _getTitleWidget() {
     return [
-      _getTitleItemWidget('Name', 100),
+      _getTitleItemWidget('Name', 300),
       _getTitleItemWidget('Age', 100),
       // _getTitleItemWidget('Phone', 200),
       // _getTitleItemWidget('Register', 100),
@@ -65,8 +65,10 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
       width: width,
       height: 56,
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-      alignment: Alignment.centerLeft,
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      alignment: Alignment.center,
+      child: Text(label, style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold)),
     );
   }
 
