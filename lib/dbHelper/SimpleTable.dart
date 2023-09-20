@@ -15,6 +15,7 @@ class SimpleTablePage extends StatefulWidget {
 }
 
 class _SimpleTablePageState extends State<SimpleTablePage> {
+  var _tstyle=TextStyle(fontSize: 16);
   @override
   void initState() {
     //widget.user.initData(100);
@@ -24,6 +25,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return
       // Scaffold(
       // appBar: AppBar(title: const Text('Simple Table')),
@@ -79,7 +81,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
       alignment: Alignment.centerLeft,
      // child: Text(widget.user.userInfo[index].name),
-      child: Text(myRecords.recordsList[index].Name),
+      child: Text(myRecords.recordsList[index].Name,style: _tstyle,),
     );
   }
 
@@ -103,7 +105,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
               // Text(widget.user.userInfo[index].status=='true' ? 'Disabled' : 'Active')
 
 
-              Text(myRecords.recordsList[index].Age.toString())
+              Text(myRecords.recordsList[index].Age.toString(),style: _tstyle,)
 
           ),
 
