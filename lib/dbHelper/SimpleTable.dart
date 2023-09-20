@@ -29,12 +29,12 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
       // appBar: AppBar(title: const Text('Simple Table')),
       // body:
       HorizontalDataTable(
-        leftHandSideColumnWidth: 100,
-        rightHandSideColumnWidth: 600,
+        leftHandSideColumnWidth: 300,
+        rightHandSideColumnWidth: 100,
         isFixedHeader: true,
         headerWidgets: _getTitleWidget(),
-        isFixedFooter: true,
-        footerWidgets: _getTitleWidget(),
+        //isFixedFooter: true,
+        //footerWidgets: _getTitleWidget(),
         leftSideItemBuilder: _generateFirstColumnRow,
         rightSideItemBuilder: _generateRightHandSideColumnRow,
         itemCount: myRecords.recordsList.length,
@@ -77,7 +77,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
       alignment: Alignment.centerLeft,
      // child: Text(widget.user.userInfo[index].name),
-      child: Text(myRecords.recordsList[0].Name),
+      child: Text(myRecords.recordsList[index].Name),
     );
   }
 
@@ -90,8 +90,7 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
 
-          child: Row(
-            children: <Widget>[
+          child:
               // Icon(
               //     widget.user.userInfo[index].status=='true'
               //         ? Icons.notifications_off
@@ -101,11 +100,11 @@ class _SimpleTablePageState extends State<SimpleTablePage> {
               //         : Colors.green),
               // Text(widget.user.userInfo[index].status=='true' ? 'Disabled' : 'Active')
 
-              Text(myRecords.recordsList[index].Name),
+
               Text(myRecords.recordsList[index].Age.toString())
-            ],
+
           ),
-        ),
+
         // Container(
         //   width: 200,
         //   height: 52,

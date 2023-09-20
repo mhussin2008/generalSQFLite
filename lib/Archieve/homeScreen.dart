@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'userData.dart';
-import 'hSimpleTable.dart';
+import '../Archieve/userData.dart';
+import '../Archieve/hSimpleTable.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key, required this.title});
