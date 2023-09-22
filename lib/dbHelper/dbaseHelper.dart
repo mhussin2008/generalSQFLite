@@ -39,7 +39,7 @@ class dbaseHelper
 
   }
 
-  void tableExistsF() async{
+  Future<void> tableExistsF() async {
     if(dbExists) {
       var result =
           await db.rawQuery('SELECT * FROM sqlite_master WHERE name="data";');
@@ -74,15 +74,13 @@ class dbaseHelper
             'INSERT INTO data (Name, Age) VALUES ("${element.Name}", "${element.Age}")');
         print(result.toString());
       });
-
-
-
     }
   }
 
   void readFromDatabase() async {
     if(dbExists) {
-      tableExistsF();
+      await tableExistsF();
+      if(tableExists){
       myRecords.recordsList.clear();
 
       List<Map<String, dynamic?>> showRecords = await db.query('data');
@@ -92,7 +90,7 @@ class dbaseHelper
         // print(element.values);
         // print(element.runtimeType);
         print(element.toString());
-      });
+      });}else{print('table not found');}
     }else{print('database not opened yet');}
 
   }
@@ -106,6 +104,14 @@ class dbaseHelper
     }
 
 
+  }
+
+  Future<void> deleteTable() async {
+    if(dbExists){
+     await mydbHelper.db.execute('DROP TABLE IF EXISTS data');
+      print('table data deleted ');
+
+    }
   }
 
 

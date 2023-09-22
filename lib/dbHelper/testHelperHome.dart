@@ -42,6 +42,12 @@ class testHelperHome extends StatelessWidget {
                 },
                 child:  Text('Create Table',style:  _mystyle)),
             ElevatedButton(
+
+                onPressed: () {
+                  mydbHelper.deleteTable();
+                },
+                child:  Text('Delete Table',style:  _mystyle,)),
+            ElevatedButton(
                 onPressed: () {
                   mydbHelper.addDatatoTable(myRecords.recordsList);
                 },
