@@ -27,30 +27,37 @@ class dbaseHelper
    initialize();
   }
 
-  void initialize() async {
+  Future<void> initialize() async {
     print('started initialization');
     databasesPath = await getDatabasesPath();
     dbFilePath = '$databasesPath/my_dbase.db';
-    await File(dbFilePath).existsSync();
+    //await File(dbFilePath).existsSync();
+    await dbExistsF();
+    if(dbExists){
     db=await openDatabase('my_dbase.db');
     print('finished initialization');
-    if(db.isOpen){dbExists=true;}
+    if(db.isOpen){dbExists=true;}}
 
 
   }
 
   Future<void> tableExistsF() async {
+    await dbExistsF();
+    print(dbExists);
     if(dbExists) {
+      if(db.isOpen){
       var result =
           await db.rawQuery('SELECT * FROM sqlite_master WHERE name="data";');
       //print(tableExists.runtimeType);
       //print(tableExists);
       if(result.isEmpty){tableExists=false;}else{tableExists=true;}
     }else{print('database doesnt exist');return;}
+    }
   }
 
   void createTable() async
   {
+    dbExistsF();
     tableExistsF();
 
       if(tableExists==false){
@@ -68,7 +75,7 @@ class dbaseHelper
   void addDatatoTable(List<SingleRecord> txRecords)  {
     var result;
     tableExistsF();
-    if(dbExists  && tableExists){
+    if(db.isOpen  && tableExists){
       txRecords.forEach((element) async {
         result = await db.rawInsert(
             'INSERT INTO data (Name, Age) VALUES ("${element.Name}", "${element.Age}")');
@@ -78,7 +85,8 @@ class dbaseHelper
   }
 
   void readFromDatabase() async {
-    if(dbExists) {
+    if(dbExists){
+      if(db.isOpen) {
       await tableExistsF();
       if(tableExists){
       myRecords.recordsList.clear();
@@ -93,7 +101,8 @@ class dbaseHelper
       });}else{print('table not found');}
     }else{print('database not opened yet');}
 
-  }
+  }}
+
 
   void deleteDataInTable() {
     tableExistsF();
@@ -107,13 +116,46 @@ class dbaseHelper
   }
 
   Future<void> deleteTable() async {
-    if(dbExists){
+    dbExistsF();
+    tableExistsF();
+    if(dbExists && tableExists){
      await mydbHelper.db.execute('DROP TABLE IF EXISTS data');
       print('table data deleted ');
 
     }
   }
 
+  Future<void> deleteDatabase() async {
+    if(dbExists){
+      //await mydbHelper.db.execute('DROP TABLE IF EXISTS data');
+      await mydbHelper.db.close();
 
+      if(mydbHelper.db.isOpen==false) {
+
+        await deleteDatabaseOriginal(databasesPath);
+
+
+      print('database was deleted ');
+
+    }
+  }
+
+
+
+  }
+
+  Future<void> deleteDatabaseOriginal(String path) =>
+      databaseFactory.deleteDatabase(path);
+
+  Future<void> dbExistsF() async {
+    dbExists=await File(dbFilePath).existsSync();
+
+    //db=await openDatabase('my_dbase.db');
+
+  }
+
+  void createDatabase() async {
+        await initialize();
+  }
 
 }

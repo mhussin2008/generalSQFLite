@@ -38,6 +38,11 @@ class testHelperHome extends StatelessWidget {
                 child:  Text('show data from memory',style:  _mystyle)),
             ElevatedButton(
                 onPressed: () {
+                  mydbHelper.createDatabase();
+                },
+                child:  Text('Create Database',style:  _mystyle)),
+            ElevatedButton(
+                onPressed: () {
                   mydbHelper.createTable();
                 },
                 child:  Text('Create Table',style:  _mystyle)),
@@ -47,6 +52,12 @@ class testHelperHome extends StatelessWidget {
                   mydbHelper.deleteTable();
                 },
                 child:  Text('Delete Table',style:  _mystyle,)),
+            ElevatedButton(
+
+                onPressed: () async {
+                  await mydbHelper.deleteDatabase();
+                },
+                child:  Text('Delete Databse',style:  _mystyle,)),
             ElevatedButton(
                 onPressed: () {
                   mydbHelper.addDatatoTable(myRecords.recordsList);
