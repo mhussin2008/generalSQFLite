@@ -31,12 +31,12 @@ class dbaseHelper
     print('started initialization');
     databasesPath = await getDatabasesPath();
     dbFilePath = '$databasesPath/my_dbase.db';
-    //await File(dbFilePath).existsSync();
-    await dbExistsF();
-    if(dbExists){
+    // await File(dbFilePath).existsSync();
+    // await dbExistsF();
+    // if(dbExists){
     db=await openDatabase('my_dbase.db');
     print('finished initialization');
-    if(db.isOpen){dbExists=true;}}
+    if(db.isOpen){dbExists=true;}
 
 
   }
@@ -91,7 +91,7 @@ class dbaseHelper
       if(tableExists){
       myRecords.recordsList.clear();
 
-      List<Map<String, dynamic?>> showRecords = await db.query('data');
+      List<Map<String, dynamic>> showRecords = await db.query('data');
       showRecords.forEach((element) {
         myRecords.recordsList.add(SingleRecord(
             element.values.elementAt(1), element.values.elementAt(2)));
@@ -131,11 +131,14 @@ class dbaseHelper
       await mydbHelper.db.close();
 
       if(mydbHelper.db.isOpen==false) {
+        var _file=File(dbFilePath);
+        if (await _file.existsSync()==true){
+        var _ret=await _file.delete();
+        print(_ret.exists());
+        //await deleteDatabaseOriginal(databasesPath);
 
-        await deleteDatabaseOriginal(databasesPath);
 
-
-      print('database was deleted ');
+      print('database was deleted ');}else{print('file doesnt exist');}
 
     }
   }
@@ -144,11 +147,13 @@ class dbaseHelper
 
   }
 
-  Future<void> deleteDatabaseOriginal(String path) =>
-      databaseFactory.deleteDatabase(path);
+  Future<void> deleteDatabaseOriginal(String path) async {
+    return await databaseFactory.deleteDatabase(path);
+  }
 
   Future<void> dbExistsF() async {
     dbExists=await File(dbFilePath).existsSync();
+    print(dbExists);
 
     //db=await openDatabase('my_dbase.db');
 
