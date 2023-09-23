@@ -109,10 +109,7 @@ class dbaseHelper
     if(dbExists && tableExists){
       mydbHelper.db.delete('data');
       print('all data in data table were deleted');
-
     }
-
-
   }
 
   Future<void> deleteTable() async {
@@ -121,7 +118,6 @@ class dbaseHelper
     if(dbExists && tableExists){
      await mydbHelper.db.execute('DROP TABLE IF EXISTS data');
       print('table data deleted ');
-
     }
   }
 
@@ -129,22 +125,15 @@ class dbaseHelper
     if(dbExists){
       //await mydbHelper.db.execute('DROP TABLE IF EXISTS data');
       await mydbHelper.db.close();
-
       if(mydbHelper.db.isOpen==false) {
         var _file=File(dbFilePath);
         if (await _file.existsSync()==true){
         var _ret=await _file.delete();
         print(_ret.exists());
         //await deleteDatabaseOriginal(databasesPath);
-
-
       print('database was deleted ');}else{print('file doesnt exist');}
-
     }
   }
-
-
-
   }
 
   Future<void> deleteDatabaseOriginal(String path) async {
@@ -154,9 +143,7 @@ class dbaseHelper
   Future<void> dbExistsF() async {
     dbExists=await File(dbFilePath).existsSync();
     print(dbExists);
-
     //db=await openDatabase('my_dbase.db');
-
   }
 
   void createDatabase() async {
