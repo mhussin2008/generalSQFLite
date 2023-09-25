@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:generaldbase/dbHelper/tableViewerPage.dart';
 import 'package:generaldbase/dbHelper/theData.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class testHelperHome extends StatelessWidget {
   const testHelperHome({super.key});
@@ -89,10 +90,23 @@ class testHelperHome extends StatelessWidget {
   }
 
   void showDataFromMemory() {
-    myRecords.recordsList.forEach((element) {
+    if(myRecords.recordsList.isEmpty){
 
+      Fluttertoast.showToast(
+          msg: "Empty data at memory",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      print('empty data at memory');
+      return;
+    }
+    for (SingleRecord element in myRecords.recordsList) {
       print(element);
-    });
+    }
   }
 
 
