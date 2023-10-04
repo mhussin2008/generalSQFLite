@@ -3,33 +3,20 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import 'theData.dart';
 
-class SimpleTablePage extends StatefulWidget {
-  const SimpleTablePage({
+class SimpleTablePage extends StatelessWidget {
+   SimpleTablePage({
     Key? key,
     //required this.user,
   }) : super(key: key);
   //final User user;
 
-  @override
-  State<SimpleTablePage> createState() => _SimpleTablePageState();
-}
-
-class _SimpleTablePageState extends State<SimpleTablePage> {
   var _tstyle=TextStyle(fontSize: 16);
-  @override
-  void initState() {
-    //widget.user.initData(100);
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
 
     return
-      // Scaffold(
-      // appBar: AppBar(title: const Text('Simple Table')),
-      // body:
+
       HorizontalDataTable(
         leftHandSideColumnWidth: 300,
         rightHandSideColumnWidth: 100,

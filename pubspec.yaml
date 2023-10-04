@@ -39,6 +39,7 @@ dependencies:
   sqflite: ^2.2.6
   word_generator: ^0.4.3
   shared_preferences: ^2.2.1
+  fluttertoast: ^8.2.2
 
 
 dev_dependencies:
