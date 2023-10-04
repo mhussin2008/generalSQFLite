@@ -17,8 +17,16 @@ class shared_class{
     await shared_pref.setInt('int_data', int_data);
   }
 
+  Future<void> save_string(List<String> str_list) async{
+    await shared_pref.setStringList('str_list', str_list);
+  }
+  Future<List<String>?> get_str_list() async {
+    //print(shared_pref.hashCode);
+    return await shared_pref.getStringList('str_list');
+  }
+
   Future<int?> get_data() async {
-    print(shared_pref.hashCode);
+    //print(shared_pref.hashCode);
     return await shared_pref.getInt('int_data');
   }
 
