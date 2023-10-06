@@ -1,18 +1,21 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:word_generator/word_generator.dart';
 import 'shared_class.dart';
 
-class shared_main extends StatefulWidget {
-  const shared_main({super.key});
+
+class shared_main_screen extends StatefulWidget {
+  const shared_main_screen({super.key});
 
   @override
-  State<shared_main> createState() => _shared_mainState();
+  State<shared_main_screen> createState() => _shared_main_screenState();
 }
 
-class _shared_mainState extends State<shared_main> {
+class _shared_main_screenState extends State<shared_main_screen> {
   shared_class shared_inst=shared_class();
   int?  int_data=null;
+  List<String>? strList=[];
 
 
   @override
@@ -37,14 +40,17 @@ class _shared_mainState extends State<shared_main> {
             children: [
 
               ElevatedButton(onPressed:  () async {
-                 await shared_inst.save_data(10);
+                 //await shared_inst.save_data(10);
+                await shared_inst.save_string(generateData());
+                print('string list Saved to SharedPreferences');
                 },
                   child: Text('Set data to 10',style: TextStyle(fontSize: 20))),
 
               ElevatedButton(
                 onPressed: () async {
-                int_data= await shared_inst.get_data();
-                print(int_data);
+                //int_data= await shared_inst.get_data();
+                  strList= await shared_inst.get_str_list();
+                print(strList);
                 setState(() {
 
                 });
@@ -58,4 +64,12 @@ class _shared_mainState extends State<shared_main> {
       ),
     );
   }
+
+  List<String> generateData(){
+
+    //final wordGenerator = WordGenerator();
+    return WordGenerator().randomNouns(10);
+
+    }
+
 }
