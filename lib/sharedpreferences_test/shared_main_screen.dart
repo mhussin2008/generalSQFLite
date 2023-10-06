@@ -13,7 +13,7 @@ class shared_main_screen extends StatefulWidget {
 }
 
 class _shared_main_screenState extends State<shared_main_screen> {
-  shared_class shared_inst=shared_class();
+  //shared_class shared_inst=shared_class();
   int?  int_data=null;
   List<String>? strList=[];
 
@@ -41,7 +41,8 @@ class _shared_main_screenState extends State<shared_main_screen> {
 
               ElevatedButton(onPressed:  () async {
                  //await shared_inst.save_data(10);
-                await shared_inst.save_string(generateData());
+                //await shared_inst.save_string(generateData());
+                await shared_class.save_string(generateData());
                 print('string list Saved to SharedPreferences');
                 },
                   child: Text('Set data to 10',style: TextStyle(fontSize: 20))),
@@ -49,7 +50,8 @@ class _shared_main_screenState extends State<shared_main_screen> {
               ElevatedButton(
                 onPressed: () async {
                 //int_data= await shared_inst.get_data();
-                  strList= await shared_inst.get_str_list();
+                  //strList= await shared_inst.get_str_list();
+                  strList= await shared_class.get_str_list();
                 print(strList);
                 setState(() {
 
