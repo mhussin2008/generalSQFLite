@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:generaldbase/sharedpreferences_test/shared_main_screen.dart';
+import 'package:generaldbase/sharedpreferences/shared_main_screen.dart';
 
 void main(){
   runApp(MaterialApp(home: shared_test()));

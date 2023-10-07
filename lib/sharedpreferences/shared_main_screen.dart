@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:word_generator/word_generator.dart';
 import 'shared_class.dart';
@@ -13,7 +11,7 @@ class shared_main_screen extends StatefulWidget {
 }
 
 class _shared_main_screenState extends State<shared_main_screen> {
-  //shared_class shared_inst=shared_class();
+
   int?  int_data=null;
   List<String>? strList=[];
 

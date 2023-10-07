@@ -15,6 +15,7 @@ class shared_class{
   }
 
   static Future<void> save_data(int int_data) async{
+    print('initialized is $_initialized');
     if(_initialized==true){
     await shared_pref.setInt('int_data', int_data);
     }
@@ -23,6 +24,7 @@ class shared_class{
   }
 
   static Future<void> save_string(List<String> str_list) async{
+    print('initialized is $_initialized');
     if(_initialized==true){
     await shared_pref.setStringList('str_list', str_list);
     }
@@ -30,6 +32,7 @@ class shared_class{
   }
   static Future<List<String>?> get_str_list() async {
     //print(shared_pref.hashCode);
+    print('initialized is $_initialized');
     if(_initialized==true){
     return await shared_pref.getStringList('str_list');
     }
