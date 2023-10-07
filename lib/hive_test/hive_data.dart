@@ -6,23 +6,25 @@ part 'hive_data.g.dart';
 @HiveType(typeId: 1)
 class Person extends HiveObject {
   Person(
-      {required this.Id, required this.name, required this.age, required this.friends });
+      {required this.name, required this.age, required this.friends });
+
+  // @HiveField(0)
+  // int Id;
 
   @HiveField(0)
-  int Id;
-
-  @HiveField(1)
   String name;
 
-  @HiveField(2)
+  @HiveField(1)
   int age;
 
-  @HiveField(3)
+  @HiveField(2)
   List<String> friends;
 
   @override
   String toString() {
-    return '$name: $age';
+    return 'name=$name: age=$age\n friend are ${friends.toString()}';
+
+
   }
 }
 
@@ -32,13 +34,14 @@ class hiveOperations{
   static late var box;
 
 static void initialize() async {
+  print(path);
  if(_initialized){return;}
 
   Hive.init(path);
   try {
     Hive.registerAdapter(PersonAdapter());
   } catch (e, s) {
-    //print(s);
+    print(s);
   }
   box = await Hive.openBox('testBox');
   if(box!=null){
@@ -50,6 +53,7 @@ static void putdata(Person d) async {
     if(_initialized==false){
       initialize();
       return;}
+  print('already initialized try to put');
   try {
     await box.put('dave', d);
   } catch (e, s) {

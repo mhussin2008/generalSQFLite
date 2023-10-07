@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'hive_data.dart';
 import 'dart:io';
-
+// dart run build_runner build
 
 class hive_screen extends StatelessWidget {
    hive_screen({super.key});
@@ -13,7 +13,7 @@ class hive_screen extends StatelessWidget {
     var person = Person(
       name: 'Dave',
       age: 22,
-      friends: ['Linda', 'Marc', 'Anne'], Id: 1,
+      friends: ['Linda', 'Marc', 'Anne'],
     );
     return  Scaffold(
       appBar: AppBar(title: Text('Hive test app'),),
