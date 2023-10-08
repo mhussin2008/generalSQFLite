@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:generaldbase/hive_test/simple_data.dart';
 import 'package:hive/hive.dart';
 import 'hive_data.dart';
 import 'dart:io';
@@ -35,20 +36,17 @@ class hive_screen extends StatelessWidget {
                 child: Text('get data from Hive',style: TextStyle(fontSize: 20)),
               ),
               ElevatedButton(onPressed: () async {
-                Box<dynamic> box = await initializeHive();
-
-                box.put('name', ['Ahmed','ali','refaat']);
-                box.put('age', 150);
-                box.close();
+                simpleData.setData('name', ['Ahmed','ali','refaat']);
+                simpleData.setData('age', 150);
+                //simpleData.close();
                 print('data saved');
               },
                 child: Text('Save single data to Hive',style: TextStyle(fontSize: 20)),
               ),
               ElevatedButton(onPressed: () async {
-                Box<dynamic> box = await initializeHive();
-                print(box.values);
-                var data=box.get('name');
-                print(data);
+
+                print(await simpleData.getData('name'));
+
               },
                 child: Text('Get single data to Hive',style: TextStyle(fontSize: 20)),
               ),
@@ -59,10 +57,5 @@ class hive_screen extends StatelessWidget {
     );
   }
 
-  Future<Box<dynamic>> initializeHive() async {
-    var path = Directory.current.path;
-    Hive.init(path);
-    var box = await Hive.openBox('my2Box');
-    return box;
-  }
+
 }
